@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "python-poetry-project"
+version = "0.1.0"
+description = ""
+authors = ["ShapeSh1fta <alonfux@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = "^0.112.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

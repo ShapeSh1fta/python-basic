@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "python-basic"
+version = "0.1.0"
+description = "basic project for python development"
+authors = ["Alon Fux"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = "^0.112.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
