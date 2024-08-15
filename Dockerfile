@@ -7,6 +7,7 @@ ENV POETRY_VERSION=1.6.1
 
 # Install dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    git \
     curl \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
