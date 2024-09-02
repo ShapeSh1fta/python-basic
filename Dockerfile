@@ -16,6 +16,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+# Install Node.js and npm (required for TypeScript and React)
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+    && apt-get install -y nodejs \
+    && npm install -g npm
+
+# Install TypeScript globally
+RUN npm install -g typescript
+
+# Install create-react-app for React development
+RUN npm install -g create-react-app
+
 # Terraform installation
 RUN wget -O- https://apt.releases.hashicorp.com/gpg | \
             gpg --dearmor | \
@@ -55,3 +66,6 @@ COPY . .
 
 # Install dependencies defined in pyproject.toml (if present)
 RUN poetry install || true
+
+# Install dependencies defined in package.json (if present)
+RUN npm install || true
