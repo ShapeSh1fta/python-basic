@@ -1,13 +1,16 @@
 import React, { useState, useEffect, FormEvent } from 'react';
 
 function HelloWorld() {
+  const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+  const wsUrl = `${protocol}//${window.location.host}/ws`;
+
   const [message, setMessage] = useState<string>('');
   const [buttonMessage, setButtonMessage] = useState<string>('');
   const [wsMessage, setWsMessage] = useState<string>('');
   const [ws, setWs] = useState<WebSocket | null>(null);
 
   useEffect(() => {
-    const websocket = new WebSocket('ws://localhost:8000/ws');
+    const websocket = new WebSocket(wsUrl);
     setWs(websocket);
 
     websocket.onmessage = (event: MessageEvent) => {
