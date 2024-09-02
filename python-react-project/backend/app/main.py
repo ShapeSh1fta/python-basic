@@ -1,12 +1,13 @@
 from fastapi import FastAPI, WebSocket, Request
 from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
-from fastapi.templating import Jinja2Templates
 import os
 
 app = FastAPI()
 
 frontend_build_path = f'../frontend/build'
+
+app.mount("/static", StaticFiles(directory=f"{frontend_build_path}/static"), name="static")
 
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):

@@ -2,6 +2,7 @@ import React, { useState, useEffect, FormEvent } from 'react';
 
 function HelloWorld() {
   const [message, setMessage] = useState<string>('');
+  const [buttonMessage, setButtonMessage] = useState<string>('');
   const [wsMessage, setWsMessage] = useState<string>('');
   const [ws, setWs] = useState<WebSocket | null>(null);
 
@@ -31,6 +32,10 @@ function HelloWorld() {
     alert(data.message);
   };
 
+  const sendButtonMessage = () => {
+    setButtonMessage(message);
+  };
+
   const sendWebSocketMessage = () => {
     if (ws) {
       ws.send(message);
@@ -49,6 +54,8 @@ function HelloWorld() {
         />
         <button type="submit">Submit</button>
       </form>
+      <button onClick={sendButtonMessage}>Send Button Message</button>
+      <p>Button Message: {buttonMessage}</p>
       <button onClick={sendWebSocketMessage}>Send WebSocket Message</button>
       <p>WebSocket Message: {wsMessage}</p>
     </div>
