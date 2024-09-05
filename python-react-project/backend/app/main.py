@@ -15,7 +15,7 @@ async def read_root(request: Request):
 
 @app.post("/api/submit")
 async def submit_form(data: dict):
-    return {"message": f"Received: {data['message']}"}
+    return {"message": f"Received: {data['data']}"}
 
 # sets up a health check route. This is used later to show how you can hit
 # the API and the React App url's
