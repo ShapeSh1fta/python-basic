@@ -12,3 +12,4 @@
 ## Project specifics
 - The project is just a sample to run FastAPI backend over Gunicorn as recommended by [GeeksForGeeks](https://www.geeksforgeeks.org/fast-api-gunicorn-vs-uvicorn/)
 - The front is using react with chakra ui and written in typescript
+- The project can be deployed localy by running `docker-compose up`

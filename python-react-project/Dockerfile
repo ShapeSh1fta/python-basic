@@ -27,12 +27,19 @@ FROM python:3.12-slim
 WORKDIR /app
 COPY --from=backend-build /app/backend ./backend
 COPY --from=js-obfuscator /app/build ./frontend/build
-COPY backend/templates ./backend/templates
+
+RUN pip install gunicorn
 
 # Create log directory for Gunicorn
 RUN mkdir -p /var/log/gunicorn
 
-EXPOSE 8000
+EXPOSE 8000 8001
 
-# Use Gunicorn to serve the application
-CMD ["gunicorn", "--chdir", "backend", "--conf", "backend/gunicorn_conf.py", "app.main:app"]
+# # Use Gunicorn to serve the application
+# CMD ["gunicorn", "--chdir", "backend", "--conf", "backend/gunicorn_conf.py", "app.main:app"]
+# Copy the start script and make it executable
+COPY backend/start.sh ./
+RUN chmod +x start.sh
+
+# Use the start script to run both Gunicorn and WebSocket server
+CMD ["./start.sh"]

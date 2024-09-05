@@ -1,0 +1,8 @@
+# docker-compose.yml
+services:
+  server:
+    build: ./python-react-project
+    ports:
+      - "8000:8000"
+      - "8001:8001"
+    
