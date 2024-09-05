@@ -11,3 +11,4 @@
 - Before running setup_and_deploy.sh make sure that you are logged into your cloud provider through cli and send the provider as parameter to the bash (aws/gcp)
 ## Project specifics
 - The project is just a sample to run FastAPI backend over Gunicorn as recommended by [GeeksForGeeks](https://www.geeksforgeeks.org/fast-api-gunicorn-vs-uvicorn/)
+- The front is using react with chakra ui and written in typescript
