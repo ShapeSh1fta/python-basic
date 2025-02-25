@@ -1,0 +1,6 @@
+{
+    "python.testing.cwd": "${workspaceFolder}/python-react-project/backend",
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true,
+    "python.envFile": ""
+}
