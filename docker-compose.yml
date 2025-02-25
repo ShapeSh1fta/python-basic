@@ -13,7 +13,7 @@ services:
       - rabbitmq
 
   db:
-    image: postgres:15
+    image: postgres:17.4
     ports:
       - "5432:5432"
     environment:
