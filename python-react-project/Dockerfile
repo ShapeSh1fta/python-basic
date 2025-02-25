@@ -19,27 +19,41 @@ WORKDIR /app/backend
 RUN pip install poetry
 COPY backend/pyproject.toml backend/poetry.lock* ./
 RUN poetry config virtualenvs.create false \
-    && poetry install --no-dev --no-interaction --no-ansi
+    && poetry install
 COPY backend/ ./
 
 # Stage 4: Final image
 FROM python:3.12-slim
-WORKDIR /app
-COPY --from=backend-build /app/backend ./backend
-COPY --from=js-obfuscator /app/build ./frontend/build
+WORKDIR /app/backend
+COPY --from=backend-build /app/backend/app ./app
+COPY --from=backend-build /app/backend/pyproject.toml ./pyproject.toml
+COPY --from=backend-build /app/backend/poetry.lock ./poetry.lock
+COPY --from=backend-build /app/backend/gunicorn_conf.py ./gunicorn_conf.py
+# Place frontend files one level up relative to backend
+COPY --from=js-obfuscator /app/build /app/frontend/build
+COPY --from=backend-build /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
+COPY --from=backend-build /usr/local/bin /usr/local/bin
 
-RUN pip install gunicorn
+
+RUN pip install gunicorn uvicorn poetry
 
 # Create log directory for Gunicorn
 RUN mkdir -p /var/log/gunicorn
 
+# Verify the directory structure
+RUN ls -la /app/frontend/build/static || echo "Static directory not found"
+
 EXPOSE 8000 8001
 
-# # Use Gunicorn to serve the application
-# CMD ["gunicorn", "--chdir", "backend", "--conf", "backend/gunicorn_conf.py", "app.main:app"]
 # Copy the start script and make it executable
-COPY backend/start.sh ./
+COPY backend/start.sh ./start.sh
 RUN chmod +x start.sh
+
+# Additional debug to show exact file location
+RUN find /app -name "websocket_server.py"
 
 # Use the start script to run both Gunicorn and WebSocket server
 CMD ["./start.sh"]
+# Automatically start FastAPI using Uvicorn or Gunicorn
+# CMD tail -f /dev/null
+# CMD ["poetry", "run", "uvicorn", "backend.app.main:app", "--host", "0.0.0.0", "--port", "8000"]

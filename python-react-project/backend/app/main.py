@@ -1,7 +1,8 @@
-from fastapi import FastAPI, WebSocket, Request
+from fastapi import FastAPI, WebSocket, Request, WebSocketDisconnect
 from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
-import os
+import asyncio
+
 
 app = FastAPI()
 
@@ -32,7 +33,22 @@ async def react_app(req: Request, rest_of_path: str):
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
-    await websocket.accept()
-    while True:
-        data = await websocket.receive_text()
-        await websocket.send_text(f"Message received: {data}")
+    i = 0
+    try:
+        await websocket.accept()
+        while i < 10:
+            await websocket.send_text(f"Current counter: {i}")
+            i += 1
+            await asyncio.sleep(5)
+        while True:
+            data = await websocket.receive_text()
+            await websocket.send_text(f"Message received: {data}")
+            await websocket.send_text(f"Current counter: {i}")
+            i += 1
+            await asyncio.sleep(5)
+            await websocket.send_text(f"Current counter: {i}")
+            i += 1
+    except WebSocketDisconnect:
+        print("Client disconnected")
+    except Exception as e:
+        print(f"Error: {e}")

@@ -1,4 +1,9 @@
 # Sample python development container
+## Instructions
+- Open the folder in vs code
+- Open the command palette and run `Dev Containers: Reopen in container`
+- Open terminal and run `poetry install`
+- Make sure that you have pytest configured properly to run the tests
 ## Overview
 - This is a sample project that was developed in vs code on a devcontainer setup
 - The project contains the necessary initial dev ops as code (Terraform) to be deployed on GCP/AWS more specifically on a kubernetes

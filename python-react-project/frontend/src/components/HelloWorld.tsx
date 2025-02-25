@@ -44,17 +44,35 @@ function HelloWorld() {
   }
 
   useEffect(() => {
-    const websocket = new WebSocket(wsUrl);
-    setWs(websocket);
+    let websocket: WebSocket;
+    
+    const connect = () => {
+      websocket = new WebSocket(wsUrl);
+      
+      websocket.onopen = () => {
+        console.log('Connected to WebSocket');
+      };
 
-    websocket.onmessage = (event: MessageEvent) => {
-      setWsMessage(event.data);
+      websocket.onmessage = (event: MessageEvent) => {
+        setWsMessage(event.data);
+      };
+
+      websocket.onclose = () => {
+        console.log('WebSocket closed, reconnecting...');
+        // Reconnect after a short delay
+        setTimeout(connect, 1000);
+      };
+
+      setWs(websocket);
     };
 
+    connect();
+
+    // Cleanup function
     return () => {
       websocket.close();
     };
-  }, []);
+  }, []); // Empty dependency array to run only once on mount
 
   const onSubmit = async (data: any) => {
     return await sendToAPI(data.messageText)
